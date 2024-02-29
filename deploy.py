@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 # Load the trained model
 model = load_model('model.h5')
-class_names = ['metal', 'glass', 'organic', 'paper', 'cardboard', 'plastic']
+class_names = ['cardboard', 'glass', 'metal', 'organic', 'paper', 'plastic']
 
 # Function to preprocess the image
 def preprocess_image(image_path):
