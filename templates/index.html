@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Garbage Image Classifier</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
@@ -8,25 +10,458 @@
       integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
       crossorigin="anonymous"
     />
+    <link rel="icon" type="image/x-icon" href="../static/bin.png" />
+    <link rel="stylesheet" type="text/css" href="../static/styles.css" />
   </head>
-
   <body>
-    <h1 class="text-center">Image Classifier</h1>
+    <section class="py-3 py-md-5" style="background-color: #cff4fc">
+      <div class="container">
+        <div class="card border border-light-subtle rounded-2 shadow-sm">
+          <h1 class="text-center mt-5">Garbage Image Classifier</h1>
 
-    <form
-      class="p-3 text-center"
-      action="/"
-      method="post"
-      enctype="multipart/form-data"
-    >
-      <input class="form-control" type="file" name="image" />
-      <input class="btn btn-primary mt-3" type="submit" value="Predict Image" />
-    </form>
+          <div class="px-5">
+            <form
+              class="text-center"
+              action="/"
+              method="post"
+              enctype="multipart/form-data"
+              aria-label="Waste Image Upload Form"
+            >
+              <div class="px-4 pb-3">
+                <div class="my-2 text-start">Upload Gambar Sampah Anda</div>
+                <input
+                  id="imageInput"
+                  class="form-control"
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  aria-label="Choose an image file"
+                  required
+                />
+                {% if prediction %}
+                <div class="alert alert-info" role="alert">
+                  <div class="text-center" style="font-size: 20px">
+                    Hasil Prediksi : {% if prediction == 'cardboard' %}
+                    <strong>Cardboard</strong>
+                    {% elif prediction == 'plastic' %}
+                    <strong>Plastic</strong>
+                    {% elif prediction == 'paper' %}
+                    <strong>Paper</strong>
+                    {% elif prediction == 'metal' %}
+                    <strong>Metal</strong>
+                    {% elif prediction == 'glass' %}
+                    <strong>Glass</strong>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endif %}
+                <!-- {% if prediction %}
+                <div class="alert alert-info" role="alert">
+                  <div class="text-center" style="font-size: 18px">
+                    Image is classified as
+                    <strong>{{ prediction }}</strong> with an accuracy of
+                    <strong>{{ '%.2f' | format(accuracy * 100) }}%</strong>.
+                  </div>
+                </div>
+                {% endif %} -->
+              </div>
+              <div class="row mt-3">
+                <div class="col container-preview" id="originalImageContainer">
+                  <h5 class="text-center">Gambar Asli</h5>
+                  <img
+                    id="imagePreview"
+                    class="img-fluid"
+                    alt="Image preview"
+                    src=""
+                  />
+                </div>
+                <div
+                  class="col container-preview"
+                  id="preprocessedImageContainer"
+                >
+                  <h5 class="text-center">Hasil Histogram Equalization</h5>
+                  <img
+                    id="preprocessedImagePreview"
+                    class="img-fluid he-preview"
+                    alt="Preprocessed Image Preview"
+                    src="{{ preprocessed_image_path }}"
+                  />
+                </div>
+              </div>
+              <div class="py-4 mt-4">
+                <input
+                  class="btn btn-primary"
+                  type="submit"
+                  value="Predict Image"
+                />
+              </div>
+            </form>
+          </div>
+          {% if prediction %}
+          <div class="text-center mx-5 my-3">
+            <h5 class="pb-3"><b>Class Probabilities</b></h5>
+            {% for class_name, probability in class_probabilities.items() %}
+            <div class="progress-container">
+              <div class="progress-label">{{ class_name }}:</div>
+              <div class="progress-bar-wrapper">
+                <div class="progress">
+                  <div
+                    class="progress-bar"
+                    role="progressbar"
+                    style="width: {{ probability * 100 }}%"
+                    aria-valuenow="{{ probability * 100 }}"
+                    aria-valuemin="0"
+                    aria-valuemax="50"
+                  >
+                    {{ '%.2f' | format(probability * 100) }}%
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+          <div class="container p-5">
+            {% if prediction == 'cardboard' %}
+            <div class="card-box">
+              <div class="card-header">
+                Rekomendasi Pengolahan Sampah Kardus
+              </div>
+              <div class="card-main">
+                <div class="main-description">
+                  <ol>
+                    <li>
+                      <b>Membuat Kotak Sampah:</b> Anda bisa membuat kotak
+                      sampah dari kardus bekas. Pilihlah kardus yang kuat dan
+                      tidak rusak atau basah. Ukur dan bentuk kotak sesuai
+                      kebutuhan Anda. Potong dan lipat kardus sesuai dengan
+                      ukuran yang telah Anda buat. Anda juga bisa menghias kotak
+                      sampah sesuai selera Anda.
+                    </li>
+                    <li>
+                      <b>Membuat Tempat Sampah:</b> Anda juga bisa membuat
+                      tempat sampah dari kardus. Siapkan bahan dan peralatan
+                      seperti kardus bekas, gunting, penggaris, lem atau perekat
+                      yang kuat, dan cat atau bahan hias lainnya. Tentukan
+                      ukuran tempat sampah yang diinginkan. Lipat dan rekatkan
+                      kardus dengan menggunakan lem atau perekat yang kuat. Anda
+                      juga bisa mewarnai atau menghias tempat sampah dari kardus
+                      ini.
+                    </li>
+                    <li>
+                      <b>Membuat Kerajinan Tangan:</b> Anda bisa membuat
+                      berbagai produk kerajinan tangan seperti tas, tikar, atau
+                      aksesori lainnya dengan teknik rajutan atau anyaman.
+                    </li>
+                    <li>
+                      <b>Mengirim ke Bank Sampah:</b> Anda bisa mengumpulkan
+                      sampah kardus dan mengirimkannya ke bank sampah. Dengan
+                      begitu, kardus bisa didaur ulang.
+                    </li>
+                    <li>
+                      <b>Membuat Tali dari Kardus:</b> Dengan membuat tali dari
+                      kardus, Anda bisa mengurangi volume sampah kardus dan
+                      memberikan nilai tambah dari produk yang dihasilkan.
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            {% elif prediction == 'glass' %}
+            <div class="card-box">
+              <div class="card-header">Rekomendasi Pengolahan Sampah Kaca</div>
+              <div class="card-main">
+                <div class="main-description">
+                  <ol>
+                    <li>
+                      <b>Pemisahan:</b> Pertama, Anda harus memisahkan atau
+                      menyortir antara sampah kaca dan non kaca agar proses daur
+                      ulang bisa berjalan lebih mudah.
+                    </li>
+                    <li>
+                      <b>Pembersihan:</b> Setelah menyortir sampah kaca,
+                      bersihkan sampah kaca dengan air bersih agar terhindar
+                      dari kotoran.
+                    </li>
+                    <li>
+                      <b>Penghancuran:</b> Kemudian, kaca dihancurkan menjadi
+                      potongan kecil yang disebut cullet. Ukuran cullet harus
+                      konsisten agar dapat diproses lebih lanjut dengan efisien.
+                    </li>
+                    <li>
+                      <b>Peleburan dan Pembentukan:</b> Cullet kemudian dilebur
+                      di dalam tungku pada suhu sekitar 1.500 hingga 1.600
+                      derajat Celsius. Proses peleburan ini mengubah cullet
+                      menjadi cairan kaca yang kemudian dapat dibentuk menjadi
+                      berbagai produk baru.
+                    </li>
+                    <li>
+                      <b>Daur Ulang:</b> Daur ulang kaca adalah proses
+                      mengumpulkan dan memproses kaca bekas untuk membuat produk
+                      baru.
+                    </li>
+                    <li>
+                      <b>Gunakan Kembali:</b> Anda bisa mencuci bersih dan
+                      mengeringkan sampah kaca, kemudian menggunakannya kembali
+                      menjadi hal yang berguna, misalnya botol kaca yang dapat
+                      dibersihkan dan digunakan kembali untuk menyimpan barang
+                      atau menjadikannya sebagai hiasan rumah.
+                    </li>
+                    <li>
+                      <b>Pengiriman ke Bank Sampah:</b> Anda bisa mengumpulkan
+                      sampah kaca dan mengirimkannya ke bank sampah. Dengan
+                      begitu, kaca bisa didaur ulang.
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            {% elif prediction == 'metal' %}
+            <div class="card-box">
+              <div class="card-header">Rekomendasi Pengolahan Sampah Logam</div>
+              <div class="card-main">
+                <div class="main-description">
+                  <ol>
+                    <li>
+                      <b>Pengumpulan Sampah Logam:</b> Sampah logam seperti
+                      kaleng bekas, kawat, atau besi bisa dikumpulkan secara
+                      terpisah dari sampah lainnya.
+                    </li>
+                    <li>
+                      <b>Pemisahan Logam:</b> Setelah sampah logam terkumpul,
+                      langkah selanjutnya adalah memisahkan logam satu sama
+                      lain. Logam yang berbeda memiliki titik leleh yang berbeda
+                      dan dapat dipisahkan dengan memanaskan sampah campuran
+                      hingga logam yang memiliki titik leleh lebih rendah
+                      meleleh terlebih dahulu.
+                    </li>
+                    <li>
+                      <b>Penggilingan dan Pencucian:</b> Setelah pemisahan,
+                      logam-logam yang telah dilelehkan kemudian digiling
+                      menjadi bubuk logam atau potongan-potongan kecil.
+                      Kemudian, logam dicuci untuk menghilangkan kotoran dan
+                      zat-zat lain yang menempel.
+                    </li>
+                    <li>
+                      <b>Pengolahan Lebih Lanjut:</b> Setelah dicuci,
+                      logam-logam tersebut dapat diproses lebih lanjut sesuai
+                      dengan kebutuhan. Misalnya, jika ingin membuat produk baru
+                      dari logam tersebut, dapat dilakukan proses peleburan dan
+                      pengecoran ulang.
+                    </li>
+                    <li>
+                      <b>Penggunaan Kembali atau Penjualan:</b> Setelah sampah
+                      logam telah diolah, hasilnya dapat digunakan kembali
+                      sebagai bahan baku untuk pembuatan produk baru. Jika tidak
+                      digunakan sendiri, sampah logam juga dapat dijual kepada
+                      pihak yang membutuhkannya, seperti pabrik atau pengepul
+                      logam.
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            {% elif prediction == 'organic' %}
+            <div class="card-box">
+              <div class="card-header">
+                Rekomendasi Pengolahan Sampah Organik
+              </div>
+              <div class="card-main">
+                <div class="main-description">
+                  <ol>
+                    <li>
+                      <b>Memisahkan Sampah Berdasarkan Jenisnya:</b> Pisahkan
+                      sampah organik dari sampah non-organik. Sampah organik
+                      bisa berupa sisa makanan, kulit buah, daun-daun kering,
+                      dan lainnya.
+                    </li>
+                    <li>
+                      <b>Menerapkan Prinsip 3R (Reduce, Reuse, Recycle):</b>
+                      Konsep ini mencakup pengurangan volume sampah, menggunakan
+                      kembali barang yang telah terpakai, dan mendaur ulang
+                      sampah.
+                    </li>
+                    <li>
+                      <b>Membuat Komposter:</b> Buatlah komposter di halaman
+                      rumah Anda. Komposter bisa berupa tong besar atau lubang
+                      di tanah yang diberi penutup. Masukkan sampah organik ke
+                      dalam komposter secara berkala. Pastikan untuk
+                      mengaduk-aduk sampah di dalam komposter agar proses
+                      pengomposan berjalan dengan baik.
+                    </li>
+                    <li>
+                      <b>Pemanfaatan Kompos:</b> Setelah beberapa minggu, kompos
+                      siap untuk digunakan. Anda bisa menggunakannya sebagai
+                      pupuk untuk tanaman di rumah Anda.
+                    </li>
+                    <li>
+                      <b>Membuat Lubang Biopori:</b> Jika ada sisa sampah
+                      organik, Anda bisa membuat lubang biopori di halaman
+                      rumah. Lubang biopori adalah lubang sempit yang dibuat di
+                      tanah untuk menampung sampah organik.
+                    </li>
+                    <li>
+                      <b>Pemeliharaan:</b> Lakukan pemeliharaan secara berkala,
+                      seperti mengaduk kompos dan mengecek kondisi lubang
+                      biopori.
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            {% elif prediction == 'paper' %}
+            <div class="card-box">
+              <div class="card-header">
+                Rekomendasi Pengolahan Sampah Kertas
+              </div>
+              <div class="card-main">
+                <div class="main-description">
+                  <ol>
+                    <li>
+                      <b>Gunakan Kembali:</b> Sebelum mendaur ulang, cari cara
+                      lain agar kertas dapat dipakai lagi untuk hal lain.
+                      Misalnya, gunakan kembali sisi kertas yang kosong untuk
+                      mencetak sesuatu yang tidak terlalu penting.
+                    </li>
+                    <li>
+                      <b>Membuat Kompos:</b> Kertas bekas berperan penting dalam
+                      proses pembuatan kompos. Sobek-sobek kertas bekas menjadi
+                      potongan-potongan kecil dan sebarkan di sekeliling tanaman
+                      Anda. Cara ini membantu menjaga kelembapan tanah Anda dan
+                      menambah nutrisi ke dalam tanah.
+                    </li>
+                    <li>
+                      <b>Bungkus Kado:</b> Gunakan koran lama untuk membungkus
+                      hadiah. Halaman komik hari Minggu cocok sebagai bungkus
+                      kado karena warnanya yang ramai.
+                    </li>
+                    <li>
+                      <b>Mengepak Kotak:</b> Gunakan koran lama untuk mengisi
+                      paket yang akan dikirim. Bungkus barang-barang rapuh atau
+                      pecah belah di dalam lapisan kertas, dan isi ruang-ruang
+                      kosong dalam kotak dengan gulungan kertas sehingga semua
+                      barang tetap pas pada tempatnya.
+                    </li>
+                    <li>
+                      <b>Membuat Kertas Baru:</b> Anda bisa mencoba membuat
+                      kertas daur ulang sendiri di rumah. Hancurkan kertas bekas
+                      yang akan didaur ulang dan campur dengan air hangat di
+                      dalam baskom. Setelah bubur kertas cukup halus, masukkan
+                      dan rendam bingkai kasa kawat ke dalam campuran di baskom.
+                      Angkat bingkai dan letakkan pada sehelai handuk.
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            {% elif prediction == 'plastic' %}
+            <div class="card-box">
+              <div class="card-header">
+                Rekomendasi Pengolahan Sampah Plastik
+              </div>
+              <div class="card-main">
+                <div class="main-description">
+                  <ol>
+                    <li>
+                      <b>Memisahkan Sampah:</b> Pertama, Anda harus memisahkan
+                      atau menyortir antara sampah plastik dan non plastik agar
+                      proses daur ulang bisa berjalan lebih mudah.
+                    </li>
+                    <li>
+                      <b>Membersihkan Sampah Plastik:</b> Setelah menyortir
+                      sampah plastik, bersihkan sampah plastik dengan air bersih
+                      agar terhindar dari kotoran.
+                    </li>
+                    <li>
+                      <b>Membuat Kerajinan Tangan:</b> Anda bisa membuat
+                      berbagai produk kerajinan tangan seperti tas, tikar, atau
+                      aksesori lainnya dengan teknik rajutan atau anyaman.
+                    </li>
+                    <li>
+                      <b>Mengirim ke Bank Sampah:</b> Anda bisa mengumpulkan
+                      sampah plastik dan mengirimkannya ke bank sampah. Dengan
+                      begitu, botol bisa didaur ulang.
+                    </li>
+                    <li>
+                      <b>Membuat Tali dari Botol Plastik:</b> Dengan membuat
+                      tali dari botol plastik, Anda bisa mengurangi volume
+                      sampah plastik dan memberikan nilai tambah dari produk
+                      yang dihasilkan.
+                    </li>
+                    <li>
+                      <b>Reuse:</b> Anda bisa mencuci bersih dan mengeringkan
+                      sampah plastik, kemudian menggunakannya kembali menjadi
+                      hal yang berguna, misalnya kemasan minyak goreng atau
+                      gelas plastik bisa dijadikan pot tanaman.
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </section>
 
-    {% if prediction %}
-    <p class="text-center">
-      Image is a {{prediction}} ({{ '%.2f' | format(accuracy * 100) }}%)
-    </p>
-    {% endif %}
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-pzjw8f+ua7Kw1TIqG6bI2pZr6fFQ776j3nRfaOBmH4MELq6n3eMsHAf5VzKNmWBr"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const imageInput = document.getElementById("imageInput");
+      const imagePreview = document.getElementById("imagePreview");
+      const originalImageContainer = document.getElementById(
+        "originalImageContainer"
+      );
+      const preprocessedImagePreview = document.getElementById(
+        "preprocessedImagePreview"
+      );
+      const preprocessedImageContainer = document.getElementById(
+        "preprocessedImageContainer"
+      );
+
+      imageInput.addEventListener("change", function (event) {
+        const file = event.target.files[0];
+
+        if (file) {
+          const reader = new FileReader();
+
+          reader.onload = function (e) {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = "block";
+            originalImageContainer.style.display = "block";
+            sessionStorage.setItem("imageSrc", e.target.result);
+          };
+
+          reader.readAsDataURL(file);
+        } else {
+          imagePreview.src = "";
+          imagePreview.style.display = "none";
+          originalImageContainer.style.display = "none";
+          sessionStorage.removeItem("imageSrc");
+        }
+      });
+
+      window.addEventListener("load", function () {
+        const savedImageSrc = sessionStorage.getItem("imageSrc");
+
+        if (savedImageSrc) {
+          imagePreview.src = savedImageSrc;
+          imagePreview.style.display = "block";
+          originalImageContainer.style.display = "block";
+        }
+
+        // Hide preprocessed image preview initially
+        if ("{{ preprocessed_image_path }}") {
+          preprocessedImageContainer.style.display = "block";
+          preprocessedImagePreview.style.display = "block";
+        } else {
+          preprocessedImageContainer.style.display = "none";
+          preprocessedImagePreview.style.display = "none";
+        }
+      });
+    </script>
   </body>
 </html>

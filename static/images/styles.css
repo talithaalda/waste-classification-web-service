@@ -1,0 +1,85 @@
+body {
+  font-family: "Open Sans", sans-serif;
+}
+
+#imagePreview,
+#preprocessedImageContainer {
+  display: none;
+  max-width: 100%;
+  height: auto;
+  margin: auto;
+}
+.he-preview {
+  max-width: 100%;
+  height: auto;
+  margin: auto;
+}
+.container-preview img {
+  align-items: center;
+  justify-content: center;
+  max-height: 400px;
+}
+.container-preview {
+  display: none;
+}
+.alert {
+  margin-bottom: 0 !important;
+  margin-top: 10px;
+}
+.progress {
+  height: 30px;
+  margin-bottom: 10px;
+}
+.progress-bar {
+  line-height: 10px;
+  background-color: #1059c6;
+}
+.class-name {
+  display: flex;
+  align-items: center;
+}
+.progress-container {
+  display: flex;
+  align-items: center;
+}
+.progress-label {
+  flex: 0 0 8%;
+  margin-right: 10px;
+  text-align: right;
+}
+.progress-bar-wrapper {
+  flex: 1;
+}
+.card-box {
+  width: auto; /* Set width of cards */
+  display: flex; /* Children use Flexbox */
+  flex-direction: column; /* Rotate Axis */
+  border: 1px solid #055160; /* Set up Border */
+  border-radius: 4px; /* Slightly Curve edges */
+  overflow: hidden; /* Fixes the corners */
+  margin: 5px; /* Add space between cards */
+}
+
+.card-header {
+  color: #055160;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  border-bottom: 1px solid #055160;
+  background-color: #cff4fc;
+  padding: 5px 10px;
+}
+
+.card-main {
+  display: flex; /* Children use Flexbox */
+  flex-direction: column; /* Rotate Axis to Vertical */
+  justify-content: start; /* Group Children in Center */
+  align-items: start; /* Group Children in Center (on cross axis) */
+  padding: 15px 15px; /* Add padding to the top/bottom */
+}
+
+.main-description {
+  color: #055160;
+  font-size: 16px;
+  text-align: start;
+}
