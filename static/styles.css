@@ -10,6 +10,9 @@ body {
   height: auto;
   margin: auto;
 }
+#predictDesc {
+  display: none;
+}
 .he-preview {
   max-width: 100%;
   height: auto;

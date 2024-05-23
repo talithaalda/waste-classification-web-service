@@ -83,6 +83,11 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   } else {
+    removeButton = document.getElementById("removeButton");
+    removeButton.onclick = () => {
+      sessionStorage.removeItem("imageSrc");
+      window.location.href = "/";
+    };
     window.addEventListener("load", handleLoad);
     const preprocessedImagePreview = document.getElementById(
       "preprocessedImagePreview"

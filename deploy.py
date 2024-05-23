@@ -40,7 +40,7 @@ def preprocess_image(image_path):
 def index():
     return render_template('index.html')
 
-@app.route('/', methods=['POST'])
+@app.route('/predict', methods=['POST'])
 def predict():
     image_file = request.files['image']
     image_path = os.path.join('static', 'images', image_file.filename)

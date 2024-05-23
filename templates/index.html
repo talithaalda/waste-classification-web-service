@@ -32,7 +32,7 @@
             {% if prediction == null %}
             <form
               class="text-center"
-              action="/"
+              action="/predict"
               method="post"
               enctype="multipart/form-data"
               aria-label="Waste Image Upload Form"
@@ -102,6 +102,7 @@
                   src=""
                 />
               </div>
+
               <div
                 class="col container-preview"
                 id="preprocessedImageContainer"
@@ -115,309 +116,325 @@
                 />
               </div>
             </div>
-          </div>
-          <div class="text-center mx-5 my-3">
-            <h5 class="pt-5 pb-3"><b>Class Probabilities</b></h5>
-            {% for class_name, probability in class_probabilities.items() %}
-            <div class="progress-container">
-              <div class="progress-label">{{ class_name }}:</div>
-              <div class="progress-bar-wrapper">
-                <div class="progress text-center">
-                  <div
-                    class="progress-bar"
-                    role="progressbar"
-                    style="width: {{ probability * 100 }}%"
-                    aria-valuenow="{{ probability * 100 }}"
-                    aria-valuemin="0"
-                    aria-valuemax="50"
-                  ></div>
-                  <div class="d-flex align-items-center p-2">
-                    {{ '%.2f' | format(probability * 100) }}%
+            <div class="d-flex justify-content-center" style="width: 100%">
+              <div style="width: 150px">
+                <button class="download mt-5" id="removeButton">Hapus</button>
+              </div>
+            </div>
+
+            <div class="text-center mx-5 my-3">
+              <h5 class="py-3"><b>Class Probabilities</b></h5>
+              {% for class_name, probability in class_probabilities.items() %}
+              <div class="progress-container">
+                <div class="progress-label">{{ class_name }}:</div>
+                <div class="progress-bar-wrapper">
+                  <div class="progress text-center">
+                    <div
+                      class="progress-bar"
+                      role="progressbar"
+                      style="width: {{ probability * 100 }}%"
+                      aria-valuenow="{{ probability * 100 }}"
+                      aria-valuemin="0"
+                      aria-valuemax="50"
+                    ></div>
+                    <div class="d-flex align-items-center p-2">
+                      {{ '%.2f' | format(probability * 100) }}%
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            {% endfor %}
-          </div>
-          {% endif %}
-          <div class="container p-5">
-            {% if prediction == 'cardboard' %}
-            <div class="card-box">
-              <div class="card-header">
-                Rekomendasi Pengolahan Sampah Kardus
-              </div>
-              <div class="card-main">
-                <div class="main-description">
-                  <ol>
-                    <li>
-                      <b>Membuat Kotak Sampah:</b> Anda bisa membuat kotak
-                      sampah dari kardus bekas. Pilihlah kardus yang kuat dan
-                      tidak rusak atau basah. Ukur dan bentuk kotak sesuai
-                      kebutuhan Anda. Potong dan lipat kardus sesuai dengan
-                      ukuran yang telah Anda buat. Anda juga bisa menghias kotak
-                      sampah sesuai selera Anda.
-                    </li>
-                    <li>
-                      <b>Membuat Tempat Sampah:</b> Anda juga bisa membuat
-                      tempat sampah dari kardus. Siapkan bahan dan peralatan
-                      seperti kardus bekas, gunting, penggaris, lem atau perekat
-                      yang kuat, dan cat atau bahan hias lainnya. Tentukan
-                      ukuran tempat sampah yang diinginkan. Lipat dan rekatkan
-                      kardus dengan menggunakan lem atau perekat yang kuat. Anda
-                      juga bisa mewarnai atau menghias tempat sampah dari kardus
-                      ini.
-                    </li>
-                    <li>
-                      <b>Membuat Kerajinan Tangan:</b> Anda bisa membuat
-                      berbagai produk kerajinan tangan seperti tas, tikar, atau
-                      aksesori lainnya dengan teknik rajutan atau anyaman.
-                    </li>
-                    <li>
-                      <b>Mengirim ke Bank Sampah:</b> Anda bisa mengumpulkan
-                      sampah kardus dan mengirimkannya ke bank sampah. Dengan
-                      begitu, kardus bisa didaur ulang.
-                    </li>
-                    <li>
-                      <b>Membuat Tali dari Kardus:</b> Dengan membuat tali dari
-                      kardus, Anda bisa mengurangi volume sampah kardus dan
-                      memberikan nilai tambah dari produk yang dihasilkan.
-                    </li>
-                  </ol>
-                </div>
-              </div>
-            </div>
-            {% elif prediction == 'glass' %}
-            <div class="card-box">
-              <div class="card-header">Rekomendasi Pengolahan Sampah Kaca</div>
-              <div class="card-main">
-                <div class="main-description">
-                  <ol>
-                    <li>
-                      <b>Pemisahan:</b> Pertama, Anda harus memisahkan atau
-                      menyortir antara sampah kaca dan non kaca agar proses daur
-                      ulang bisa berjalan lebih mudah.
-                    </li>
-                    <li>
-                      <b>Pembersihan:</b> Setelah menyortir sampah kaca,
-                      bersihkan sampah kaca dengan air bersih agar terhindar
-                      dari kotoran.
-                    </li>
-                    <li>
-                      <b>Penghancuran:</b> Kemudian, kaca dihancurkan menjadi
-                      potongan kecil yang disebut cullet. Ukuran cullet harus
-                      konsisten agar dapat diproses lebih lanjut dengan efisien.
-                    </li>
-                    <li>
-                      <b>Peleburan dan Pembentukan:</b> Cullet kemudian dilebur
-                      di dalam tungku pada suhu sekitar 1.500 hingga 1.600
-                      derajat Celsius. Proses peleburan ini mengubah cullet
-                      menjadi cairan kaca yang kemudian dapat dibentuk menjadi
-                      berbagai produk baru.
-                    </li>
-                    <li>
-                      <b>Daur Ulang:</b> Daur ulang kaca adalah proses
-                      mengumpulkan dan memproses kaca bekas untuk membuat produk
-                      baru.
-                    </li>
-                    <li>
-                      <b>Gunakan Kembali:</b> Anda bisa mencuci bersih dan
-                      mengeringkan sampah kaca, kemudian menggunakannya kembali
-                      menjadi hal yang berguna, misalnya botol kaca yang dapat
-                      dibersihkan dan digunakan kembali untuk menyimpan barang
-                      atau menjadikannya sebagai hiasan rumah.
-                    </li>
-                    <li>
-                      <b>Pengiriman ke Bank Sampah:</b> Anda bisa mengumpulkan
-                      sampah kaca dan mengirimkannya ke bank sampah. Dengan
-                      begitu, kaca bisa didaur ulang.
-                    </li>
-                  </ol>
-                </div>
-              </div>
-            </div>
-            {% elif prediction == 'metal' %}
-            <div class="card-box">
-              <div class="card-header">Rekomendasi Pengolahan Sampah Logam</div>
-              <div class="card-main">
-                <div class="main-description">
-                  <ol>
-                    <li>
-                      <b>Pengumpulan Sampah Logam:</b> Sampah logam seperti
-                      kaleng bekas, kawat, atau besi bisa dikumpulkan secara
-                      terpisah dari sampah lainnya.
-                    </li>
-                    <li>
-                      <b>Pemisahan Logam:</b> Setelah sampah logam terkumpul,
-                      langkah selanjutnya adalah memisahkan logam satu sama
-                      lain. Logam yang berbeda memiliki titik leleh yang berbeda
-                      dan dapat dipisahkan dengan memanaskan sampah campuran
-                      hingga logam yang memiliki titik leleh lebih rendah
-                      meleleh terlebih dahulu.
-                    </li>
-                    <li>
-                      <b>Penggilingan dan Pencucian:</b> Setelah pemisahan,
-                      logam-logam yang telah dilelehkan kemudian digiling
-                      menjadi bubuk logam atau potongan-potongan kecil.
-                      Kemudian, logam dicuci untuk menghilangkan kotoran dan
-                      zat-zat lain yang menempel.
-                    </li>
-                    <li>
-                      <b>Pengolahan Lebih Lanjut:</b> Setelah dicuci,
-                      logam-logam tersebut dapat diproses lebih lanjut sesuai
-                      dengan kebutuhan. Misalnya, jika ingin membuat produk baru
-                      dari logam tersebut, dapat dilakukan proses peleburan dan
-                      pengecoran ulang.
-                    </li>
-                    <li>
-                      <b>Penggunaan Kembali atau Penjualan:</b> Setelah sampah
-                      logam telah diolah, hasilnya dapat digunakan kembali
-                      sebagai bahan baku untuk pembuatan produk baru. Jika tidak
-                      digunakan sendiri, sampah logam juga dapat dijual kepada
-                      pihak yang membutuhkannya, seperti pabrik atau pengepul
-                      logam.
-                    </li>
-                  </ol>
-                </div>
-              </div>
-            </div>
-            {% elif prediction == 'organic' %}
-            <div class="card-box">
-              <div class="card-header">
-                Rekomendasi Pengolahan Sampah Organik
-              </div>
-              <div class="card-main">
-                <div class="main-description">
-                  <ol>
-                    <li>
-                      <b>Memisahkan Sampah Berdasarkan Jenisnya:</b> Pisahkan
-                      sampah organik dari sampah non-organik. Sampah organik
-                      bisa berupa sisa makanan, kulit buah, daun-daun kering,
-                      dan lainnya.
-                    </li>
-                    <li>
-                      <b>Menerapkan Prinsip 3R (Reduce, Reuse, Recycle):</b>
-                      Konsep ini mencakup pengurangan volume sampah, menggunakan
-                      kembali barang yang telah terpakai, dan mendaur ulang
-                      sampah.
-                    </li>
-                    <li>
-                      <b>Membuat Komposter:</b> Buatlah komposter di halaman
-                      rumah Anda. Komposter bisa berupa tong besar atau lubang
-                      di tanah yang diberi penutup. Masukkan sampah organik ke
-                      dalam komposter secara berkala. Pastikan untuk
-                      mengaduk-aduk sampah di dalam komposter agar proses
-                      pengomposan berjalan dengan baik.
-                    </li>
-                    <li>
-                      <b>Pemanfaatan Kompos:</b> Setelah beberapa minggu, kompos
-                      siap untuk digunakan. Anda bisa menggunakannya sebagai
-                      pupuk untuk tanaman di rumah Anda.
-                    </li>
-                    <li>
-                      <b>Membuat Lubang Biopori:</b> Jika ada sisa sampah
-                      organik, Anda bisa membuat lubang biopori di halaman
-                      rumah. Lubang biopori adalah lubang sempit yang dibuat di
-                      tanah untuk menampung sampah organik.
-                    </li>
-                    <li>
-                      <b>Pemeliharaan:</b> Lakukan pemeliharaan secara berkala,
-                      seperti mengaduk kompos dan mengecek kondisi lubang
-                      biopori.
-                    </li>
-                  </ol>
-                </div>
-              </div>
-            </div>
-            {% elif prediction == 'paper' %}
-            <div class="card-box">
-              <div class="card-header">
-                Rekomendasi Pengolahan Sampah Kertas
-              </div>
-              <div class="card-main">
-                <div class="main-description">
-                  <ol>
-                    <li>
-                      <b>Gunakan Kembali:</b> Sebelum mendaur ulang, cari cara
-                      lain agar kertas dapat dipakai lagi untuk hal lain.
-                      Misalnya, gunakan kembali sisi kertas yang kosong untuk
-                      mencetak sesuatu yang tidak terlalu penting.
-                    </li>
-                    <li>
-                      <b>Membuat Kompos:</b> Kertas bekas berperan penting dalam
-                      proses pembuatan kompos. Sobek-sobek kertas bekas menjadi
-                      potongan-potongan kecil dan sebarkan di sekeliling tanaman
-                      Anda. Cara ini membantu menjaga kelembapan tanah Anda dan
-                      menambah nutrisi ke dalam tanah.
-                    </li>
-                    <li>
-                      <b>Bungkus Kado:</b> Gunakan koran lama untuk membungkus
-                      hadiah. Halaman komik hari Minggu cocok sebagai bungkus
-                      kado karena warnanya yang ramai.
-                    </li>
-                    <li>
-                      <b>Mengepak Kotak:</b> Gunakan koran lama untuk mengisi
-                      paket yang akan dikirim. Bungkus barang-barang rapuh atau
-                      pecah belah di dalam lapisan kertas, dan isi ruang-ruang
-                      kosong dalam kotak dengan gulungan kertas sehingga semua
-                      barang tetap pas pada tempatnya.
-                    </li>
-                    <li>
-                      <b>Membuat Kertas Baru:</b> Anda bisa mencoba membuat
-                      kertas daur ulang sendiri di rumah. Hancurkan kertas bekas
-                      yang akan didaur ulang dan campur dengan air hangat di
-                      dalam baskom. Setelah bubur kertas cukup halus, masukkan
-                      dan rendam bingkai kasa kawat ke dalam campuran di baskom.
-                      Angkat bingkai dan letakkan pada sehelai handuk.
-                    </li>
-                  </ol>
-                </div>
-              </div>
-            </div>
-            {% elif prediction == 'plastic' %}
-            <div class="card-box">
-              <div class="card-header">
-                Rekomendasi Pengolahan Sampah Plastik
-              </div>
-              <div class="card-main">
-                <div class="main-description">
-                  <ol>
-                    <li>
-                      <b>Memisahkan Sampah:</b> Pertama, Anda harus memisahkan
-                      atau menyortir antara sampah plastik dan non plastik agar
-                      proses daur ulang bisa berjalan lebih mudah.
-                    </li>
-                    <li>
-                      <b>Membersihkan Sampah Plastik:</b> Setelah menyortir
-                      sampah plastik, bersihkan sampah plastik dengan air bersih
-                      agar terhindar dari kotoran.
-                    </li>
-                    <li>
-                      <b>Membuat Kerajinan Tangan:</b> Anda bisa membuat
-                      berbagai produk kerajinan tangan seperti tas, tikar, atau
-                      aksesori lainnya dengan teknik rajutan atau anyaman.
-                    </li>
-                    <li>
-                      <b>Mengirim ke Bank Sampah:</b> Anda bisa mengumpulkan
-                      sampah plastik dan mengirimkannya ke bank sampah. Dengan
-                      begitu, botol bisa didaur ulang.
-                    </li>
-                    <li>
-                      <b>Membuat Tali dari Botol Plastik:</b> Dengan membuat
-                      tali dari botol plastik, Anda bisa mengurangi volume
-                      sampah plastik dan memberikan nilai tambah dari produk
-                      yang dihasilkan.
-                    </li>
-                    <li>
-                      <b>Reuse:</b> Anda bisa mencuci bersih dan mengeringkan
-                      sampah plastik, kemudian menggunakannya kembali menjadi
-                      hal yang berguna, misalnya kemasan minyak goreng atau
-                      gelas plastik bisa dijadikan pot tanaman.
-                    </li>
-                  </ol>
-                </div>
-              </div>
+              {% endfor %}
             </div>
             {% endif %}
+            <div class="container p-5">
+              {% if prediction == 'cardboard' %}
+              <div class="card-box">
+                <div class="card-header">
+                  Rekomendasi Pengolahan Sampah Kardus
+                </div>
+                <div class="card-main">
+                  <div class="main-description">
+                    <ol>
+                      <li>
+                        <b>Membuat Kotak Sampah:</b> Anda bisa membuat kotak
+                        sampah dari kardus bekas. Pilihlah kardus yang kuat dan
+                        tidak rusak atau basah. Ukur dan bentuk kotak sesuai
+                        kebutuhan Anda. Potong dan lipat kardus sesuai dengan
+                        ukuran yang telah Anda buat. Anda juga bisa menghias
+                        kotak sampah sesuai selera Anda.
+                      </li>
+                      <li>
+                        <b>Membuat Tempat Sampah:</b> Anda juga bisa membuat
+                        tempat sampah dari kardus. Siapkan bahan dan peralatan
+                        seperti kardus bekas, gunting, penggaris, lem atau
+                        perekat yang kuat, dan cat atau bahan hias lainnya.
+                        Tentukan ukuran tempat sampah yang diinginkan. Lipat dan
+                        rekatkan kardus dengan menggunakan lem atau perekat yang
+                        kuat. Anda juga bisa mewarnai atau menghias tempat
+                        sampah dari kardus ini.
+                      </li>
+                      <li>
+                        <b>Membuat Kerajinan Tangan:</b> Anda bisa membuat
+                        berbagai produk kerajinan tangan seperti tas, tikar,
+                        atau aksesori lainnya dengan teknik rajutan atau
+                        anyaman.
+                      </li>
+                      <li>
+                        <b>Mengirim ke Bank Sampah:</b> Anda bisa mengumpulkan
+                        sampah kardus dan mengirimkannya ke bank sampah. Dengan
+                        begitu, kardus bisa didaur ulang.
+                      </li>
+                      <li>
+                        <b>Membuat Tali dari Kardus:</b> Dengan membuat tali
+                        dari kardus, Anda bisa mengurangi volume sampah kardus
+                        dan memberikan nilai tambah dari produk yang dihasilkan.
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+              {% elif prediction == 'glass' %}
+              <div class="card-box">
+                <div class="card-header">
+                  Rekomendasi Pengolahan Sampah Kaca
+                </div>
+                <div class="card-main">
+                  <div class="main-description">
+                    <ol>
+                      <li>
+                        <b>Pemisahan:</b> Pertama, Anda harus memisahkan atau
+                        menyortir antara sampah kaca dan non kaca agar proses
+                        daur ulang bisa berjalan lebih mudah.
+                      </li>
+                      <li>
+                        <b>Pembersihan:</b> Setelah menyortir sampah kaca,
+                        bersihkan sampah kaca dengan air bersih agar terhindar
+                        dari kotoran.
+                      </li>
+                      <li>
+                        <b>Penghancuran:</b> Kemudian, kaca dihancurkan menjadi
+                        potongan kecil yang disebut cullet. Ukuran cullet harus
+                        konsisten agar dapat diproses lebih lanjut dengan
+                        efisien.
+                      </li>
+                      <li>
+                        <b>Peleburan dan Pembentukan:</b> Cullet kemudian
+                        dilebur di dalam tungku pada suhu sekitar 1.500 hingga
+                        1.600 derajat Celsius. Proses peleburan ini mengubah
+                        cullet menjadi cairan kaca yang kemudian dapat dibentuk
+                        menjadi berbagai produk baru.
+                      </li>
+                      <li>
+                        <b>Daur Ulang:</b> Daur ulang kaca adalah proses
+                        mengumpulkan dan memproses kaca bekas untuk membuat
+                        produk baru.
+                      </li>
+                      <li>
+                        <b>Gunakan Kembali:</b> Anda bisa mencuci bersih dan
+                        mengeringkan sampah kaca, kemudian menggunakannya
+                        kembali menjadi hal yang berguna, misalnya botol kaca
+                        yang dapat dibersihkan dan digunakan kembali untuk
+                        menyimpan barang atau menjadikannya sebagai hiasan
+                        rumah.
+                      </li>
+                      <li>
+                        <b>Pengiriman ke Bank Sampah:</b> Anda bisa mengumpulkan
+                        sampah kaca dan mengirimkannya ke bank sampah. Dengan
+                        begitu, kaca bisa didaur ulang.
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+              {% elif prediction == 'metal' %}
+              <div class="card-box">
+                <div class="card-header">
+                  Rekomendasi Pengolahan Sampah Logam
+                </div>
+                <div class="card-main">
+                  <div class="main-description">
+                    <ol>
+                      <li>
+                        <b>Pengumpulan Sampah Logam:</b> Sampah logam seperti
+                        kaleng bekas, kawat, atau besi bisa dikumpulkan secara
+                        terpisah dari sampah lainnya.
+                      </li>
+                      <li>
+                        <b>Pemisahan Logam:</b> Setelah sampah logam terkumpul,
+                        langkah selanjutnya adalah memisahkan logam satu sama
+                        lain. Logam yang berbeda memiliki titik leleh yang
+                        berbeda dan dapat dipisahkan dengan memanaskan sampah
+                        campuran hingga logam yang memiliki titik leleh lebih
+                        rendah meleleh terlebih dahulu.
+                      </li>
+                      <li>
+                        <b>Penggilingan dan Pencucian:</b> Setelah pemisahan,
+                        logam-logam yang telah dilelehkan kemudian digiling
+                        menjadi bubuk logam atau potongan-potongan kecil.
+                        Kemudian, logam dicuci untuk menghilangkan kotoran dan
+                        zat-zat lain yang menempel.
+                      </li>
+                      <li>
+                        <b>Pengolahan Lebih Lanjut:</b> Setelah dicuci,
+                        logam-logam tersebut dapat diproses lebih lanjut sesuai
+                        dengan kebutuhan. Misalnya, jika ingin membuat produk
+                        baru dari logam tersebut, dapat dilakukan proses
+                        peleburan dan pengecoran ulang.
+                      </li>
+                      <li>
+                        <b>Penggunaan Kembali atau Penjualan:</b> Setelah sampah
+                        logam telah diolah, hasilnya dapat digunakan kembali
+                        sebagai bahan baku untuk pembuatan produk baru. Jika
+                        tidak digunakan sendiri, sampah logam juga dapat dijual
+                        kepada pihak yang membutuhkannya, seperti pabrik atau
+                        pengepul logam.
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+              {% elif prediction == 'organic' %}
+              <div class="card-box">
+                <div class="card-header">
+                  Rekomendasi Pengolahan Sampah Organik
+                </div>
+                <div class="card-main">
+                  <div class="main-description">
+                    <ol>
+                      <li>
+                        <b>Memisahkan Sampah Berdasarkan Jenisnya:</b>
+                        Pisahkan sampah organik dari sampah non-organik. Sampah
+                        organik bisa berupa sisa makanan, kulit buah, daun-daun
+                        kering, dan lainnya.
+                      </li>
+                      <li>
+                        <b>Menerapkan Prinsip 3R (Reduce, Reuse, Recycle):</b>
+                        Konsep ini mencakup pengurangan volume sampah,
+                        menggunakan kembali barang yang telah terpakai, dan
+                        mendaur ulang sampah.
+                      </li>
+                      <li>
+                        <b>Membuat Komposter:</b> Buatlah komposter di halaman
+                        rumah Anda. Komposter bisa berupa tong besar atau lubang
+                        di tanah yang diberi penutup. Masukkan sampah organik ke
+                        dalam komposter secara berkala. Pastikan untuk
+                        mengaduk-aduk sampah di dalam komposter agar proses
+                        pengomposan berjalan dengan baik.
+                      </li>
+                      <li>
+                        <b>Pemanfaatan Kompos:</b> Setelah beberapa minggu,
+                        kompos siap untuk digunakan. Anda bisa menggunakannya
+                        sebagai pupuk untuk tanaman di rumah Anda.
+                      </li>
+                      <li>
+                        <b>Membuat Lubang Biopori:</b> Jika ada sisa sampah
+                        organik, Anda bisa membuat lubang biopori di halaman
+                        rumah. Lubang biopori adalah lubang sempit yang dibuat
+                        di tanah untuk menampung sampah organik.
+                      </li>
+                      <li>
+                        <b>Pemeliharaan:</b> Lakukan pemeliharaan secara
+                        berkala, seperti mengaduk kompos dan mengecek kondisi
+                        lubang biopori.
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+              {% elif prediction == 'paper' %}
+              <div class="card-box">
+                <div class="card-header">
+                  Rekomendasi Pengolahan Sampah Kertas
+                </div>
+                <div class="card-main">
+                  <div class="main-description">
+                    <ol>
+                      <li>
+                        <b>Gunakan Kembali:</b> Sebelum mendaur ulang, cari cara
+                        lain agar kertas dapat dipakai lagi untuk hal lain.
+                        Misalnya, gunakan kembali sisi kertas yang kosong untuk
+                        mencetak sesuatu yang tidak terlalu penting.
+                      </li>
+                      <li>
+                        <b>Membuat Kompos:</b> Kertas bekas berperan penting
+                        dalam proses pembuatan kompos. Sobek-sobek kertas bekas
+                        menjadi potongan-potongan kecil dan sebarkan di
+                        sekeliling tanaman Anda. Cara ini membantu menjaga
+                        kelembapan tanah Anda dan menambah nutrisi ke dalam
+                        tanah.
+                      </li>
+                      <li>
+                        <b>Bungkus Kado:</b> Gunakan koran lama untuk membungkus
+                        hadiah. Halaman komik hari Minggu cocok sebagai bungkus
+                        kado karena warnanya yang ramai.
+                      </li>
+                      <li>
+                        <b>Mengepak Kotak:</b> Gunakan koran lama untuk mengisi
+                        paket yang akan dikirim. Bungkus barang-barang rapuh
+                        atau pecah belah di dalam lapisan kertas, dan isi
+                        ruang-ruang kosong dalam kotak dengan gulungan kertas
+                        sehingga semua barang tetap pas pada tempatnya.
+                      </li>
+                      <li>
+                        <b>Membuat Kertas Baru:</b> Anda bisa mencoba membuat
+                        kertas daur ulang sendiri di rumah. Hancurkan kertas
+                        bekas yang akan didaur ulang dan campur dengan air
+                        hangat di dalam baskom. Setelah bubur kertas cukup
+                        halus, masukkan dan rendam bingkai kasa kawat ke dalam
+                        campuran di baskom. Angkat bingkai dan letakkan pada
+                        sehelai handuk.
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+              {% elif prediction == 'plastic' %}
+              <div class="card-box">
+                <div class="card-header">
+                  Rekomendasi Pengolahan Sampah Plastik
+                </div>
+                <div class="card-main">
+                  <div class="main-description">
+                    <ol>
+                      <li>
+                        <b>Memisahkan Sampah:</b> Pertama, Anda harus memisahkan
+                        atau menyortir antara sampah plastik dan non plastik
+                        agar proses daur ulang bisa berjalan lebih mudah.
+                      </li>
+                      <li>
+                        <b>Membersihkan Sampah Plastik:</b> Setelah menyortir
+                        sampah plastik, bersihkan sampah plastik dengan air
+                        bersih agar terhindar dari kotoran.
+                      </li>
+                      <li>
+                        <b>Membuat Kerajinan Tangan:</b> Anda bisa membuat
+                        berbagai produk kerajinan tangan seperti tas, tikar,
+                        atau aksesori lainnya dengan teknik rajutan atau
+                        anyaman.
+                      </li>
+                      <li>
+                        <b>Mengirim ke Bank Sampah:</b> Anda bisa mengumpulkan
+                        sampah plastik dan mengirimkannya ke bank sampah. Dengan
+                        begitu, botol bisa didaur ulang.
+                      </li>
+                      <li>
+                        <b>Membuat Tali dari Botol Plastik:</b> Dengan membuat
+                        tali dari botol plastik, Anda bisa mengurangi volume
+                        sampah plastik dan memberikan nilai tambah dari produk
+                        yang dihasilkan.
+                      </li>
+                      <li>
+                        <b>Reuse:</b> Anda bisa mencuci bersih dan mengeringkan
+                        sampah plastik, kemudian menggunakannya kembali menjadi
+                        hal yang berguna, misalnya kemasan minyak goreng atau
+                        gelas plastik bisa dijadikan pot tanaman.
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            </div>
           </div>
         </div>
       </div>
