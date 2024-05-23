@@ -1,11 +1,9 @@
 from flask import Flask, request, jsonify, render_template
-from PIL import Image
 import numpy as np
 import os
 import cv2
 import tensorflow as tf
 
-os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 app = Flask(__name__)
 
 # Load the trained model
