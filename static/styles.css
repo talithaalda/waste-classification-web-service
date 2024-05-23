@@ -44,7 +44,7 @@ body {
   align-items: center;
 }
 .progress-label {
-  flex: 0 0 8%;
+  flex: 0 0 10%;
   margin-right: 10px;
   text-align: right;
 }
