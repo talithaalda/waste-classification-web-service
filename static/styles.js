@@ -59,8 +59,9 @@ document.addEventListener("DOMContentLoaded", function () {
           } else {
             const imgElement = document.createElement("img");
             imgElement.src = fileURL;
-            imgElement.style.height = "500px";
-            imgElement.style.width = "auto";
+            // imgElement.style.height = "500px";
+            // imgElement.style.width = "auto";
+            imgElement.classList.add("img-preview");
             dropArea.appendChild(imgElement);
             wrap.style.display = "none";
             sessionStorage.setItem("imageSrc", fileURL);

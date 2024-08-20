@@ -89,7 +89,6 @@ body {
 }
 .container-upload {
   width: 100%;
-  padding: 30px;
   background: #fff;
   border-radius: 20px;
 }
@@ -151,4 +150,16 @@ h3 {
 .wrap {
   display: flex;
   flex-direction: column;
+}
+.img-preview {
+    height: 500px !important;
+    width: auto !important;
+  }
+@media only screen and (max-width: 600px) {
+  .img-preview {
+    height: 400px !important;
+  }
+  .drag-area {
+    height: 400px !important;
+  }
 }

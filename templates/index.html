@@ -23,12 +23,12 @@
     <section class="py-3 py-md-5">
       <div class="container">
         <div
-          class="card border border-light-subtle shadow-sm px-5"
+          class="card border border-light-subtle shadow-sm px-0 px-lg-5 px-sm-3"
           style="border-radius: 20px"
         >
-          <h1 class="text-center mt-5">Garbage Image Classifier</h1>
+          <h1 class="text-center mt-5 px-2 px-lg-5 px-sm-3">Garbage Image Classifier</h1>
 
-          <div class="px-5">
+          <div class="px-0 px-lg-5 px-sm-2">
             {% if prediction == null %}
             <form
               class="text-center"
@@ -74,7 +74,8 @@
               </div>
             </form>
             {% endif %} {% if prediction %}
-            <div class="alert alert-info" role="alert">
+            <div class="px-4 pb-3">
+              <div class="alert alert-info" role="alert">
               <div class="text-center" style="font-size: 20px">
                 Hasil Prediksi : {% if prediction == 'cardboard' %}
                 <strong>Cardboard</strong>
@@ -93,8 +94,15 @@
             </div>
 
             <div class="row mt-3">
+              <div class="col text-center d-flex justify-content-center align-items-center">
+                <h5>Gambar Asli</h5>
+              </div>
+              <div class="col text-center">
+                <h5>Hasil Histogram Equalization</h5>
+              </div>
+            </div>
+            <div class="row mt-3">
               <div class="col container-preview" id="originalImageContainer">
-                <h5 class="text-center">Gambar Asli</h5>
                 <img
                   id="imagePreview"
                   class="img-fluid"
@@ -102,12 +110,7 @@
                   src=""
                 />
               </div>
-
-              <div
-                class="col container-preview"
-                id="preprocessedImageContainer"
-              >
-                <h5 class="text-center">Hasil Histogram Equalization</h5>
+              <div class="col container-preview" id="preprocessedImageContainer">
                 <img
                   id="preprocessedImagePreview"
                   class="img-fluid he-preview"
@@ -115,6 +118,8 @@
                   src="{{ preprocessed_image_path }}"
                 />
               </div>
+            </div>
+
             </div>
             <div class="d-flex justify-content-center" style="width: 100%">
               <div style="width: 150px">
@@ -146,7 +151,7 @@
               {% endfor %}
             </div>
             {% endif %}
-            <div class="container p-5">
+            <div class="container py-2 py-lg-5 py-sm-4">
               {% if prediction == 'cardboard' %}
               <div class="card-box">
                 <div class="card-header">
