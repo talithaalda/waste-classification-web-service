@@ -4,9 +4,14 @@ import os
 import cv2
 import tensorflow as tf
 
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
 app = Flask(__name__)
 
-model = tf.keras.models.load_model('model-densenet121.h5')
+try:
+    model = tf.keras.models.load_model('model-densenet121.h5')
+except Exception as e:
+    print(f"Error loading model: {e}")
 
 class_names = ['cardboard', 'glass', 'metal', 'organic', 'paper', 'plastic']
 
@@ -36,6 +41,7 @@ def index():
 @app.route('/predict', methods=['POST'])
 def predict():
     image_file = request.files['image']
+    
     image_path = os.path.join('static', 'images', image_file.filename)
     image_file.save(image_path)
 
