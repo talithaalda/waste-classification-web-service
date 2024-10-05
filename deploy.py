@@ -11,6 +11,7 @@ resource.setrlimit(resource.RLIMIT_NPROC, (soft, hard))
 os.environ["OMP_NUM_THREADS"] = "1"
 os.environ["OPENBLAS_NUM_THREADS"] = "1"
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["NUMEXPR_NUM_THREADS"] = "1"
 app = Flask(__name__)
 
 try:
