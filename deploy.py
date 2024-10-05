@@ -3,9 +3,14 @@ import numpy as np
 import os
 import cv2
 import tensorflow as tf
+import resource
 
+# Mengatur batasan jumlah proses
+soft, hard = resource.getrlimit(resource.RLIMIT_NPROC)
+resource.setrlimit(resource.RLIMIT_NPROC, (soft, hard))
 os.environ["OMP_NUM_THREADS"] = "1"
 os.environ["OPENBLAS_NUM_THREADS"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 app = Flask(__name__)
 
 try:
